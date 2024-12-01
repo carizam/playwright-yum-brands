@@ -21,9 +21,16 @@ This repository contains an end-to-end automation testing framework for Yum! Bra
 
 ## **Project Structure**
 
-```
-. ├── tests/ │ ├── yum-brands/ │ │ └── yum-brands-homepage.spec.ts # Test cases for Yum Brands homepage │ ├── tests-examples/ │ │ └── example.spec.ts # Example test cases ├── playwright.config.ts # Playwright configuration ├── package.json # Project dependencies and scripts ├── .gitignore # Ignored files and folders └── README.md # Project documentation
-```
+.
+├── tests/
+│ ├── yum-brands/
+│ │ └── yum-brands-homepage.spec.ts # Test cases for Yum! Brands homepage
+│ ├── tests-examples/
+│ │ └── example.spec.ts # Example test cases
+├── playwright.config.ts # Playwright configuration
+├── package.json # Project dependencies and scripts
+├── .gitignore # Ignored files and folders
+└── README.md # Project documentation
 
 ## **Setup Instructions**
 
