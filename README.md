@@ -24,7 +24,7 @@ This repository contains an end-to-end automation testing framework for Yum! Bra
 .
 ├── tests/
 │ ├── yum-brands/
-│ │ └── yum-brands-homepage.spec.ts # Test cases for Yum! Brands homepage
+│ │ └── yum-brands-homepage.spec.ts # Test cases for Yum Brands homepage
 │ ├── tests-examples/
 │ │ └── example.spec.ts # Example test cases
 ├── playwright.config.ts # Playwright configuration
@@ -61,6 +61,7 @@ This repository contains an end-to-end automation testing framework for Yum! Bra
 
 ```
   npx playwright test tests/yum-brands/yum-brands-homepage.spec.ts
+  ![alt text](image.png)
 ```
 
 4. View test reports:
