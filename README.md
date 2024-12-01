@@ -61,7 +61,7 @@ This repository contains an end-to-end automation testing framework for Yum! Bra
 
 ```
   npx playwright test tests/yum-brands/yum-brands-homepage.spec.ts
-  ![alt text](image.png)
+
 ```
 
 4. View test reports:
@@ -69,6 +69,12 @@ This repository contains an end-to-end automation testing framework for Yum! Bra
 ```
    npx playwright show-report
 ```
+
+## HTML Report
+
+Below is an example of the HTML report generated after running tests:
+
+![HTML Report Screenshot](./HTML%20Report.jpg)
 
 ## **How to Add New Tests**
 
