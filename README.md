@@ -1,6 +1,6 @@
 # **Playwright Automation Suite for Yum Brands**
 
-This repository contains an end-to-end automation testing framework for Yum Brands' web applications. Built with **Playwright**, **TypeScript**, and **Cucumber**, this project showcases a modern and scalable approach to quality assurance through automation.
+This repository contains an end-to-end automation testing framework for Yum! Brands web applications. Built with **Playwright**, **TypeScript**, and **Cucumber**, this project showcases a modern and scalable approach to quality assurance through automation.
 
 ## **Technologies Used**
 
@@ -21,7 +21,9 @@ This repository contains an end-to-end automation testing framework for Yum Bran
 
 ## **Project Structure**
 
+```
 . ├── tests/ │ ├── yum-brands/ │ │ └── yum-brands-homepage.spec.ts # Test cases for Yum Brands homepage │ ├── tests-examples/ │ │ └── example.spec.ts # Example test cases ├── playwright.config.ts # Playwright configuration ├── package.json # Project dependencies and scripts ├── .gitignore # Ignored files and folders └── README.md # Project documentation
+```
 
 ## **Setup Instructions**
 
@@ -34,7 +36,11 @@ This repository contains an end-to-end automation testing framework for Yum Bran
    ```
 
 2. Install dependencies:
+
+   ```bash
    npm install
+
+   ```
 
 3. Run tests:
 
