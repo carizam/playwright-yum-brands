@@ -91,6 +91,12 @@ test('Test description', async ({ page }) => {
 });
 ```
 
+## Demo: Running the Project
+
+Below is a screenshot showing the project running successfully:
+
+![Demo Screenshot](./Demo.jpg)
+
 ## **Contribution Guidelines**
 
 If you'd like to contribute:
