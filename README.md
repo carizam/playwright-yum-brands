@@ -44,14 +44,23 @@ This repository contains an end-to-end automation testing framework for Yum! Bra
 
 3. Run tests:
 
-- Run all tests:  
+- Run all tests:
+
+```
   npx playwright test
+```
 
 - Run specific test:
+
+```
   npx playwright test tests/yum-brands/yum-brands-homepage.spec.ts
+```
 
 4. View test reports:
+
+```
    npx playwright show-report
+```
 
 ## **How to Add New Tests**
 
@@ -59,13 +68,22 @@ Create a new .spec.ts file under the tests/ directory.
 
 Use the Playwright test syntax to define your test cases. Example:
 
+```
+import { test, expect } from '@playwright/test';
+
+test('Test description', async ({ page }) => {
+    await page.goto('https://example.com');
+    expect(await page.title()).toBe('Example Title');
+});
+```
+
 ## **Contribution Guidelines**
 
 If you'd like to contribute:
 
-1.Fork the repository.
-2.Create a feature branch.
-3.Submit a pull request for review.
+- \*\* 1.Fork the repository.
+- \*\* 2.Create a feature branch.
+- \*\* 3.Submit a pull request for review.
 
 ## **Contact**
 
