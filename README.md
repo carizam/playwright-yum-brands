@@ -101,9 +101,9 @@ Below is a screenshot showing the project running successfully:
 
 If you'd like to contribute:
 
-- \*\* 1.Fork the repository.
-- \*\* 2.Create a feature branch.
-- \*\* 3.Submit a pull request for review.
+- 1.Fork the repository.
+- 2.Create a feature branch.
+- 3.Submit a pull request for review.
 
 ## **Contact**
 
