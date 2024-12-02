@@ -1,0 +1,1 @@
+{"root":["../tests/example.spec.ts","../tests/features/step_definitions/yum_homepage.steps.ts","../tests/features/support/hooks.ts","../tests/features/support/world.ts","../tests/yum-brands/yum-brands-homepage.spec.ts"],"errors":true,"version":"5.7.2"}

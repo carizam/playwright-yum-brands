@@ -1,17 +1,8 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { chromium, Browser, Page } from 'playwright';
+import { page } from '../support/hooks';
 import assert from 'assert';
 
-let browser: Browser;
-let page: Page;
-
 Given('I navigate to the Yum Brands homepage', async () => {
-  browser = await chromium.launch({ headless: false });
-  const context = await browser.newContext({
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
-    ignoreHTTPSErrors: true,
-  });
-  page = await context.newPage();
   await page.goto('https://www.yum.com/', { waitUntil: 'domcontentloaded' });
 });
 
@@ -21,7 +12,6 @@ Then('the page title should contain {string}', async (expectedTitle: string) => 
     pageTitle.includes(expectedTitle),
     `Expected title to include "${expectedTitle}", but got "${pageTitle}"`
   );
-  await browser.close();
 });
 
 When('the page loads', async () => {
@@ -33,7 +23,8 @@ When('the page loads', async () => {
 });
 
 When('I click on the {string} link', async (menuItem: string) => {
-  await page.locator(`text=${menuItem}`).click();
+  const link = page.locator(`text=${menuItem}`);
+  await link.click();
 });
 
 Then('the URL should contain {string}', async (expectedUrl: string) => {

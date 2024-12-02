@@ -1,107 +1,60 @@
-import { test, expect, chromium } from '@playwright/test';
+import { BeforeAll, setWorldConstructor, Before, After, Given, When, Then } from '@cucumber/cucumber';
+import { CustomWorld } from '../features/support/world'; 
+import { expect, chromium, Page, Browser, BrowserContext } from '@playwright/test';
 
-test.describe('Yum Brands Homepage Tests', () => {
-  let browser;
-  let context;
+setWorldConstructor(CustomWorld);
 
-  // Setup browser and context
-  test.beforeAll(async () => {
-    browser = await chromium.launch({
-      args: ['--disable-blink-features=AutomationControlled'], // Bypass bot detection
-      headless: false, // Run in non-headless mode for debugging
-    });
+BeforeAll(async function() {
+});
 
-    context = await browser.newContext({
-      userAgent:
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
-      ignoreHTTPSErrors: true, // Handle invalid SSL certificates
-    });
+Before(async function (this: CustomWorld) {
+  this.browser = await chromium.launch({
+    args: ['--disable-blink-features=AutomationControlled'],
+    headless: false,
   });
-
-  // Cleanup browser
-  test.afterAll(async () => {
-    await browser.close();
+  this.context = await this.browser.newContext({
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+    ignoreHTTPSErrors: true,
   });
+  this.page = await this.context.newPage();
+});
 
-  // Utility function to handle iframes
-  const getIframeLocator = async (page, selector) => {
-    const frameElement = await page.locator(selector).elementHandle();
-    if (!frameElement) throw new Error(`Iframe not found for selector: ${selector}`);
-    return await frameElement.contentFrame();
-  };
+After(async function (this: CustomWorld) {
+  await this.page?.close();
+  await this.context?.close();
+  await this.browser?.close();
+});
 
-  // Utility function for safe navigation
-  const safeNavigation = async (page, url) => {
-    try {
-      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-      if (!response || !response.ok()) {
-        console.error(`Navigation failed: ${response ? response.status() : 'No response'}`);
-      } else {
-        console.log(`Page loaded successfully: ${url} (Status: ${response.status()})`);
-      }
-    } catch (error) {
-      console.error(`Navigation failed for ${url}:`, error);
-      throw error;
-    }
-  };
+Given('I open the Yum Brands homepage', async function (this: CustomWorld) {
+  await this.page!.goto('https://www.yum.com/', { waitUntil: 'domcontentloaded' });
+});
 
-  test('Handle ERR_CONNECTION_RESET error', async () => {
-    const page = await context.newPage();
-    await safeNavigation(page, 'https://www.yum.com/');
-    await page.close();
-  });
+Then('I should see the page loaded successfully', async function (this: CustomWorld) {
+  await expect(this.page!.locator('body')).toBeVisible();
+});
 
-  test('has title', async () => {
-    const page = await context.newPage();
-    await safeNavigation(page, 'https://www.yum.com/');
-    await expect(page).toHaveTitle(/Yum\.com/i);
-    await page.close();
-  });
+Then('the page title should contain {string}', async function (this: CustomWorld, title: string) {
+  const pageTitle = await this.page!.title();
+  expect(pageTitle).toMatch(new RegExp(title, 'i'));
+});
 
-  test('Validate page navigation', async () => {
-    const page = await context.newPage();
-    await safeNavigation(page, 'https://www.yum.com/');
-    await page.close();
-  });
+When('I click on the {string} menu link', async function (this: CustomWorld, menuLink: string) {
+  const link = this.page!.locator(`text=${menuLink}`);
+  await expect(link).toBeVisible();
+  await link.click();
+});
 
-  test.describe('Validate menu links', () => {
-    const menuItems = [
-      { text: 'Company', url: '/company' },
-      { text: 'Careers', url: '/careers' },
-      { text: 'Impact', url: '/impact' },
-      { text: 'Investors', url: '/investors' },
-    ];
+Then('I should be navigated to the {string} URL', async function (this: CustomWorld, url: string) {
+  await expect(this.page!).toHaveURL(new RegExp(url));
+});
 
-    test('Check menu links navigation', async () => {
-      const page = await context.newPage();
-      await safeNavigation(page, 'https://www.yum.com/');
+Then('the page should load within {int} ms', async function (this: CustomWorld, loadTime: number) {
+  const startTime = Date.now();
+  await this.page!.goto('https://www.yum.com/', { waitUntil: 'domcontentloaded' });
+  const duration = Date.now() - startTime;
 
-      for (const item of menuItems) {
-        // Handle iframe if menu is inside one
-        const iframe = await getIframeLocator(page, 'iframe[title="desired-iframe-title"]'); // Adjust selector if needed
-        const locator = iframe.locator(`text=${item.text}`);
-
-        await expect(locator).toBeVisible({ timeout: 5000 }); // Verify visibility
-        await locator.click();
-        await expect(page).toHaveURL(new RegExp(item.url), { timeout: 10000 }); // Verify URL redirection
-
-        // Go back to the homepage
-        await page.goBack({ waitUntil: 'domcontentloaded' });
-      }
-
-      await page.close();
-    });
-  });
-
-  test('Measure page load time', async () => {
-    const page = await context.newPage();
-    const startTime = Date.now();
-    await safeNavigation(page, 'https://www.yum.com/');
-    const endTime = Date.now();
-    const loadTime = endTime - startTime;
-
-    console.log(`Page load time: ${loadTime} ms`);
-    expect(loadTime).toBeLessThan(60000); // Ensure the page loads within 60 seconds
-    await page.close();
-  });
+  if (duration > loadTime) {
+    throw new Error(`Page took ${duration} ms to load, exceeding the limit of ${loadTime} ms`);
+  }
+  console.log(`Page load time: ${duration} ms`);
 });
